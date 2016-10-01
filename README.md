@@ -69,7 +69,7 @@ Priority is just a number, with lower number coming first.  There are a few cons
   - `HIGHER`: -100
   - `HIGH`: -10
   - `NORMAL`: 0
-  - `LOW':`: +10
+  - `LOW`: +10
   - `LOWER`: +100
   - `LOWEST`: +1000
 
