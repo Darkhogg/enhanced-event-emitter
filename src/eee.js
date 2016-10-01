@@ -69,10 +69,7 @@ export class Emitter {
             'priority': priority
         });
 
-        console.log('---')
-        console.log(funcs)
         funcs.sort((a, b) => (a.priority - b.priority) || (a.order - b.order));
-        console.log(funcs)
 
         return hook;
     }
