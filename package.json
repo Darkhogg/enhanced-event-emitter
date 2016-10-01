@@ -5,6 +5,7 @@
   "author": "Daniel Escoz <darkhogg+npm@gmail.com>",
   "license": "MIT",
   "main": "index.js",
+  "repository": "Darkhogg/enhanced-event-emitter",
   "scripts": {
     "prepublish": "npm run babel",
     "test": "npm run babel && true",
