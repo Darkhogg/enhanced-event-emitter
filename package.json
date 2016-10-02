@@ -1,6 +1,6 @@
 {
   "name": "enhanced-event-emitter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An Even Emitter implementation with enhanced semantics and functionality",
   "author": "Daniel Escoz <darkhogg+npm@gmail.com>",
   "license": "MIT",
@@ -12,10 +12,12 @@
     "babel": "babel src -d dist"
   },
   "dependencies": {
+    "bluebird": "^3.4.6"
+  },
+  "devDependencies": {
     "babel-cli": "^6.5.2",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-latest": "^6.14.0",
-    "babel-runtime": "^6.11.6",
-    "bluebird": "^3.4.6"
+    "babel-runtime": "^6.11.6"
   }
 }
