@@ -105,24 +105,28 @@ export class Emitter {
         }
     }
 
-    async emit (name, ...args) {
-        let listeners = this.listeners.get(name) || [];
+    async emit (names_, ...args) {
+        let names = Array.isArray(names_) ? names_ : [names_];
         let $res = new Result();
 
-        await Promise.delay(); // yield the current event for fully async emits
+        for (let name of names) {
+            let listeners = this.listeners.get(name) || [];
 
-        for (let listener of listeners) {
-            let $evt = new Event();
+            await Promise.delay(); // yield the current event for fully async emits
 
-            $evt._active = true;
-            let res = await Promise.cast(listener.hook.call(listener.thisArg, $evt, ...args));
-            $evt._active = false;
+            for (let listener of listeners) {
+                let $evt = new Event();
 
-            $evt.result = res;
-            $res._addEvent($evt);
+                $evt._active = true;
+                let res = await Promise.cast(listener.hook.call(listener.thisArg, $evt, ...args));
+                $evt._active = false;
 
-            if ($evt.stopped) {
-                break;
+                $evt.result = res;
+                $res._addEvent($evt);
+
+                if ($evt.stopped) {
+                    break;
+                }
             }
         }
 
