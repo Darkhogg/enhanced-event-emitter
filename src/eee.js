@@ -55,12 +55,12 @@ export class Result {
     get values () {
         let values = [];
 
-        for (let evt in this.events) {
+        for (let evt of this.events) {
             let value = evt.value;
 
             if (value instanceof Result) {
-                values.push(...value.values)
-            } else {
+                values.push(...value.values);
+            } else if (value) {
                 values.push(value);
             }
         }
