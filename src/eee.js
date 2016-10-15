@@ -19,7 +19,7 @@ export class Event {
     constructor () {
         this._stopped = false;
         this._active = false;
-        this.result = null;
+        this.value = null;
     }
 
     stop () {
@@ -121,7 +121,7 @@ export class Emitter {
                 let res = await Promise.cast(listener.hook.call(listener.thisArg, $evt, ...args));
                 $evt._active = false;
 
-                $evt.result = res;
+                $evt.value = res;
                 $res._addEvent($evt);
 
                 if ($evt.stopped) {
