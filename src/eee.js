@@ -64,6 +64,8 @@ export class Result {
                 values.push(value);
             }
         }
+
+        return values;
     }
 }
 
