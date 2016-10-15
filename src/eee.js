@@ -19,7 +19,7 @@ export class Event {
     constructor () {
         this._stopped = false;
         this._active = false;
-        this.value = null;
+        this._value = null;
     }
 
     stop () {
@@ -32,6 +32,10 @@ export class Event {
 
     get stopped () {
         return this._stopped;
+    }
+
+    get value () {
+        return this._value;
     }
 }
 
@@ -46,6 +50,20 @@ export class Result {
 
     get stopped () {
         return this.events.some($evt => $evt.stopped);
+    }
+
+    get values () {
+        let values = [];
+
+        for (let evt in this.events) {
+            let value = evt.value;
+
+            if (value instanceof Result) {
+                values.push(...value.values)
+            } else {
+                values.push(value);
+            }
+        }
     }
 }
 
@@ -121,7 +139,7 @@ export class Emitter {
                 let res = await Promise.cast(listener.hook.call(listener.thisArg, $evt, ...args));
                 $evt._active = false;
 
-                $evt.value = res;
+                $evt._value = res;
                 $res._addEvent($evt);
 
                 if ($evt.stopped) {
