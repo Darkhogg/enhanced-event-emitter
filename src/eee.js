@@ -129,10 +129,10 @@ export class Emitter {
         let names = Array.isArray(names_) ? names_ : [names_];
         let $res = new Result();
 
+        await Promise.delay(); // yield the current event for fully async emits
+
         for (let name of names) {
             let listeners = this.listeners.get(name) || [];
-
-            await Promise.delay(); // yield the current event for fully async emits
 
             for (let listener of listeners) {
                 let $evt = new Event();
@@ -144,9 +144,13 @@ export class Emitter {
                 $evt._value = res;
                 $res._addEvent($evt);
 
-                if ($evt.stopped) {
+                if ($res.stopped) {
                     break;
                 }
+            }
+
+            if ($res.stopped) {
+                break;
             }
         }
 
