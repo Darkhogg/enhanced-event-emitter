@@ -60,7 +60,7 @@ export class Result {
 
             if (value instanceof Result) {
                 values.push(...value.values);
-            } else if (value) {
+            } else if (value !== undefined) {
                 values.push(value);
             }
         }

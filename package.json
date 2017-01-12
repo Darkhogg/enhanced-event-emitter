@@ -1,6 +1,6 @@
 {
   "name": "enhanced-event-emitter",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "An Even Emitter implementation with enhanced semantics and functionality",
   "author": "Daniel Escoz <darkhogg+npm@gmail.com>",
   "license": "MIT",
