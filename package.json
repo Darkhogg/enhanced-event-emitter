@@ -4,12 +4,12 @@
   "description": "An Even Emitter implementation with enhanced semantics and functionality",
   "author": "Daniel Escoz <darkhogg+npm@gmail.com>",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "src/eee.js",
   "repository": "Darkhogg/enhanced-event-emitter",
   "scripts": {
     "test": "npm run babel && true"
   },
   "dependencies": {
-    "bluebird": "^3.4.6",
+    "bluebird": "^3.4.6"
   }
 }
