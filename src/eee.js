@@ -1,7 +1,7 @@
-import Promise from 'bluebird';
+const Promise = require('bluebird');
 
 
-export const PRIORITY = Object.freeze({
+const PRIORITY = Object.freeze({
     'HIGHEST': -1000,
     'HIGHER':   -100,
     'HIGH':      -10,
@@ -15,7 +15,7 @@ export const PRIORITY = Object.freeze({
 let ORDER = 0;
 
 
-export class Event {
+class Event {
     constructor () {
         this._stopped = false;
         this._active = false;
@@ -39,7 +39,7 @@ export class Event {
     }
 }
 
-export class Result {
+class Result {
     constructor () {
         this.events = [];
     }
@@ -69,7 +69,7 @@ export class Result {
     }
 }
 
-export class Emitter {
+class Emitter {
     constructor (source) {
         this.source = source;
         this.listeners = new Map();
@@ -126,28 +126,36 @@ export class Emitter {
     }
 
     async emit (names_, ...args) {
-        let names = Array.isArray(names_) ? names_ : [names_];
-        let $res = new Result();
+        const names = Array.isArray(names_) ? names_ : [names_];
+        const $res = new Result();
 
         await Promise.delay(); // yield the current event for fully async emits
 
-        for (let name of names) {
-            let listeners = this.listeners.get(name) || [];
+        const listeners = [];
 
-            for (let listener of listeners) {
-                let $evt = new Event();
+        for (const name of names) {
+            const nameListeners = this.listeners.get(name) || [];
+            listeners.push(...nameListeners);
+        }
 
-                $evt._active = true;
-                let res = await Promise.cast(listener.hook.call(listener.thisArg, $evt, ...args));
-                $evt._active = false;
-
-                $evt._value = res;
-                $res._addEvent($evt);
-
-                if ($res.stopped) {
-                    break;
-                }
+        listeners.sort((l1, l2) => {
+            const priorityDiff = l1.priority - l2.priority;
+            if (priorityDiff !== 0) {
+                return priorityDiff
             }
+
+            return l1.order - l2.order;
+        });
+
+        for (const listener of listeners) {
+            const $evt = new Event();
+
+            $evt._active = true;
+            const res = await Promise.cast(listener.hook.call(listener.thisArg, $evt, ...args));
+            $evt._active = false;
+
+            $evt._value = res;
+            $res._addEvent($evt);
 
             if ($res.stopped) {
                 break;
@@ -159,7 +167,7 @@ export class Emitter {
 }
 
 
-export default class EEE {
+class EEE {
     constructor (...args) {
         this.__eee = new Emitter(this, ...args);
     }
@@ -180,3 +188,9 @@ export default class EEE {
         return this.__eee.emit(...args);
     }
 }
+
+module.exports = EEE;
+module.exports.PRIORITY = PRIORITY;
+module.exports.Event = Event;
+module.exports.Result = Result;
+module.exports.Emitter = Emitter;
