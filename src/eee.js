@@ -123,26 +123,24 @@ class Emitter {
     }
 
     async emit (names_, ...args) {
-        const names = Array.isArray(names_) ? names_ : [names_];
-        const $res = new Result();
-
         await 1; // yield the current event for fully async emits (await is always async)
 
+        // preserves priority across multiple events
+        const $res = new Result();
         const listeners = [];
 
-        for (const name of names) {
-            const nameListeners = this.listeners.get(name) || [];
-            listeners.push(...nameListeners);
-        }
-
-        listeners.sort((l1, l2) => {
-            const priorityDiff = l1.priority - l2.priority;
-            if (priorityDiff !== 0) {
-                return priorityDiff
+        if (Array.isArray(names_)) {
+            for (const name of names_) {
+                listeners.push(...(this.listeners.get(name) || []));
             }
 
-            return l1.order - l2.order;
-        });
+            // resort because we are mixing event listeners
+            listeners.sort((l1, l2) => (l1.priority - l2.priority) || (l1.order - l2.order));
+        } else if (this.listeners.has(names_)) {
+            listeners.push(...this.listeners.get(names_));
+        } else {
+            return $res;
+        }
 
         for (const listener of listeners) {
             const $evt = new Event();
