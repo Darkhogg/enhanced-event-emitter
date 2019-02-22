@@ -126,7 +126,7 @@ class Emitter {
         const names = Array.isArray(names_) ? names_ : [names_];
         const $res = new Result();
 
-        await 1; // yield the current event for fully async emits (await is always async)
+        await Promise.resolve(); // yield the current event for fully async emits (await is always async)
 
         const listeners = [];
 
