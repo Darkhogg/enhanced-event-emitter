@@ -7,9 +7,9 @@
   "main": "src/eee.js",
   "repository": "Darkhogg/enhanced-event-emitter",
   "scripts": {
-    "test": "npm run babel && true"
+
   },
   "dependencies": {
-    "bluebird": "^3.4.6"
+
   }
 }

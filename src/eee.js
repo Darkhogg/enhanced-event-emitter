@@ -1,6 +1,3 @@
-const Promise = require('bluebird');
-
-
 const PRIORITY = Object.freeze({
     'HIGHEST': -1000,
     'HIGHER':   -100,
@@ -129,7 +126,7 @@ class Emitter {
         const names = Array.isArray(names_) ? names_ : [names_];
         const $res = new Result();
 
-        await Promise.delay(); // yield the current event for fully async emits
+        await Promise.resolve(); // yield the current event for fully async emits (await is always async)
 
         const listeners = [];
 
@@ -151,7 +148,7 @@ class Emitter {
             const $evt = new Event();
 
             $evt._active = true;
-            const res = await Promise.cast(listener.hook.call(listener.thisArg, $evt, ...args));
+            const res = await listener.hook.call(listener.thisArg, $evt, ...args);
             $evt._active = false;
 
             $evt._value = res;
